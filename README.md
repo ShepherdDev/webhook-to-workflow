@@ -29,7 +29,7 @@ in the `Request` Workflow attribute.
 
 ```json
 {
-  "DefinedValueId": "5651",
+  "DefinedValueId": 5651,
   "Url": "\/full",
   "RawUrl": "http:\/\/localhost:64706\/Webhooks\/WebhookToWorkflow.ashx\/full?groupId=42",
   "Method": "POST",

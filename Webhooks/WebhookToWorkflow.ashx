@@ -128,10 +128,10 @@ public class RequestData
     {
         var dictionary = new Dictionary<string, object>();
 
-        dictionary.Add( "DefinedValueId", Hook.Id.ToString() );
+        dictionary.Add( "DefinedValueId", Hook.Id );
         dictionary.Add( "Url", Url );
         dictionary.Add( "RawUrl", Request.Url.AbsoluteUri );
-        dictionary.Add( "Method", Request.HttpMethod.ToString() );
+        dictionary.Add( "Method", Request.HttpMethod );
         dictionary.Add( "QueryString", Request.QueryString.Cast<string>().ToDictionary( q => q, q => Request.QueryString[q] ) );
         dictionary.Add( "RemoteAddress", Request.UserHostAddress );
         dictionary.Add( "RemoteName", Request.UserHostName );

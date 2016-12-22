@@ -39,7 +39,10 @@ in the `Request` Workflow attribute.
   "RemoteAddress": "127.0.0.1",
   "RemoteName": "localhost",
   "ServerName": "localhost",
-  "Body": "{\"name\":\"Daniel\"}",
+  "Body": {
+    "name": "Daniel"
+  },
+  "RawBody": "{\"name\":\"Daniel\"}",
   "Headers": {
     "Content-Length": "17",
     "Content-Type": "application\/x-www-form-urlencoded",
@@ -70,21 +73,19 @@ the following Lava in the Workflow:
 {{ request.RemoteAddress }}
 ```
 
-You may have noticed that the `Body` we sent was a JSON string. This
-webhook has no concept of what data was actually sent, it just stuffs
-the data into the `Body` property. This means we have a JSON encoded
-string inside a JSON object. So if we wanted to get to the `name`
-property that was passed in the POST Body we need to double-decode:
+You may have noticed that the body we sent was a JSON string. This
+webhook will automatically decode x-www-form-urnencoded data as well
+as json data. If you are getting other formatted data you can access
+it via the `RawBody` property. Otherwise you may access the decoded
+data in the `Body` property. So if we wanted to get to the `name`
+property that was passed in the POST Body:
 
 ```
 {% assign request = Workflow | Attribute:'Request' | FromJSON -%}
-{% assign body = request.Body | FromJSON -%}
-{{ body.name }}
+{{ request.Body.name }}
 ```
 
-Later versions may auto-decode for well-known content types such as
-XML and JSON. If that happens the `Body` property will remain
-untouched and a new property will be added for the parsed body data.
+Later versions may auto-decode for XML content types as well.
 
 #### The Request properties
 
@@ -103,8 +104,10 @@ if it could not be resolved.
 example if the URL is `http://www.example.com/` then this will
 contain the value `www.example.com` no matter what the actual local
 DNS name of the server is.
-- `Body` contains any body content supplied by the client via an
+- `RawBody` contains any body content supplied by the client via an
 upload verb such as POST, PUT, etc.
+- `Body` contains any decoded body content. If JSON data is supplied
+then it will be available in this property like a normal child object.
 - `Headers` will contain a dictionary of all HTTP headers supplied
 by the client. This will only be available if it is enabled in the
 DefinedValue. It will never contain the `Cookie` header or the

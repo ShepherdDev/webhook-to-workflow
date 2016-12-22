@@ -22,7 +22,7 @@ public class WebhookToWorkflow: IHttpHandler
         DefinedValue hook = null;
 
         context.Response.ContentType = "text/plain";
-        
+
         foreach (DefinedValue h in hooks.DefinedValues.OrderBy(h => h.Order))
         {
             h.LoadAttributes();
@@ -139,7 +139,19 @@ public class RequestData
 
         using ( StreamReader reader = new StreamReader( Request.InputStream, Encoding.UTF8 ) )
         {
-            dictionary.Add( "Body", reader.ReadToEnd() );
+            dictionary.Add( "RawBody", reader.ReadToEnd() );
+        }
+
+            // TODO: Decode form data.
+        if ( Request.ContentType == "application/json" )
+        {
+            try
+            {
+                dictionary.Add( "Body", Newtonsoft.Json.JsonConvert.DeserializeObject( (string)dictionary["RawBody"] ) );
+            }
+            catch
+            {
+            }
         }
 
         if ( Hook.GetAttributeValue( "Headers" ).AsBoolean() )

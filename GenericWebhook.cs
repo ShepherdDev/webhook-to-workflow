@@ -19,7 +19,7 @@ namespace com.shepherdchurch.WebhookToWorkflow
     /// Generic webhook to workflow implementation. Does basic decoding of FORM data
     /// and JSON data and provides basic HttpRequest information to the Workflow.
     /// </summary>
-    public class GenericWebhook : IHttpHandler
+    public partial class GenericWebhook : IHttpHandler
     {
         /// <summary>
         /// The HttpContext related to this processing instance.

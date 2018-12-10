@@ -66,7 +66,7 @@ namespace com.shepherdchurch.WebhookToWorkflow
                 if ( hook != null )
                 {
                     Guid guid = hook.GetAttributeValue( "WorkflowType" ).AsGuid();
-                    WorkflowType workflowType = new WorkflowTypeService( RockContext ).Get( guid );
+                    var workflowType = Rock.Web.Cache.WorkflowTypeCache.Get( guid );
 
                     if ( workflowType != null )
                     {
